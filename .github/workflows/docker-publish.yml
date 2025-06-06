@@ -3,7 +3,7 @@ name: Docker Image CI
 on:
   push:
   pull_request:
-    branches: [ "main" ]
+    branches: [ "docker" ]
 
 env:
   REGISTRY: ghcr.io
@@ -33,7 +33,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GH_TOKEN }}
 
       - name: Extract Docker metadata
         id: meta
@@ -45,6 +45,7 @@ jobs:
             # Event: push,     Ref: refs/head/main,       Tags: main
             # Event: push tag, Ref: refs/tags/v1.2.3,     Tags: 1.2.3, 1.2, 1, latest
             # Event: push tag, Ref: refs/tags/v2.0.8-rc1, Tags: 2.0.8-rc1
+            type=raw,value=latest
             type=ref,event=branch
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
